@@ -1,0 +1,35 @@
+#ifndef __PROJECT_INFO_HPP_
+#define __PROJECT_INFO_HPP_
+#include <iostream>
+
+
+namespace project_info
+{
+  constexpr class version {
+    private:
+      static constexpr unsigned major{@PROJECT_VERSION_MAJOR@};
+      static constexpr unsigned minor{@PROJECT_VERSION_MINOR@};
+      static constexpr unsigned patch{@PROJECT_VERSION_PATCH@};
+      static constexpr unsigned build_num{@PROJECT_BUILD_NUMBER@};
+
+    public:
+#define CREATE_GET(specifiers, var) \
+      specifiers auto get_##var() \
+      { return var; } //
+
+      CREATE_GET(static constexpr, major);
+      CREATE_GET(static constexpr, minor);
+      CREATE_GET(static constexpr, patch);
+      CREATE_GET(static constexpr, build_num);
+#undef CREATE_GET
+
+      friend inline std::ostream& operator << (std::ostream &out,
+                                               version const &ver)
+      {
+        return out << ver.get_major() << '.'
+                   << ver.get_minor() << '.'
+                   << ver.get_patch();
+      }
+  } version;
+}
+#endif

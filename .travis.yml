@@ -1,0 +1,25 @@
+dist: xenial
+language: cpp
+compiler: clang
+addons:
+  apt:
+    update: true
+    packages:
+    - libboost-test-dev
+    - libboost-log-dev
+before_script:
+    - sudo apt-add-repository -y "deb http://archive.ubuntu.com/ubuntu xenial main universe"
+    - sudo add-apt-repository -y "ppa:ubuntu-toolchain-r/test"
+    - sudo apt-get update
+    - sudo apt-get install -y libgtest-dev build-essential cmake gcc-8 g++-8
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+script:
+- cmake .
+- cmake --build .
+- cmake --build . --target test
+- cmake --build . --target package
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -f -T ip_filter-0.0.${TRAVIS_BUILD_NUMBER}-Linux.deb -uvasilevnikitad:$BINTRAY_API_KEY "https://api.bintray.com/content/vasilevnikitad/otus-cpp/ip_filter/${TRAVIS_BUILD_NUMBER}/ip_filter-0.0.${TRAVIS_BUILD_NUMBER}-Linux.deb;deb_distribution=xenial;deb_component=main;deb_architecture=amd64;publish=1"
