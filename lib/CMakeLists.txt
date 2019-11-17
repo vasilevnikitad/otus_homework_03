@@ -18,12 +18,16 @@ endif()
 
 target_include_directories(lib INTERFACE "${CMAKE_SOURCE_DIR}/lib")
 
+include(${CMAKE_SOURCE_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+
 set_property(
     TARGET lib
         APPEND PROPERTY
             INTERFACE_INCLUDE_DIRECTORIES
                 "${CMAKE_BINARY_DIR}"
                 "${CMAKE_SOURCE_DIR}/lib"
+                "${CONAN_INCLUDE_DIRS_RANGE-V3}"
 )
 
 install(

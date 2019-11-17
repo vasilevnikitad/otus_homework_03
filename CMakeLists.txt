@@ -6,11 +6,17 @@ if ("${PROJECT_BUILD_NUMBER}" STREQUAL "")
     set(PROJECT_BUILD_NUMBER "1")
 endif ("${PROJECT_BUILD_NUMBER}" STREQUAL "")
 
+
 project(
     ip_filter
         VERSION 0.0.${PROJECT_BUILD_NUMBER}
         LANGUAGES CXX
 )
+
+execute_process(COMMAND bash -c "conan install .")
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 find_package(Threads REQUIRED)
 
