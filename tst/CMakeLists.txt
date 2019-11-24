@@ -24,7 +24,7 @@ set_target_properties(
             COMPILE_DEFINITIONS BOOST_ALL_DYN_LINK
             LINK_LIBRARIES "lib;boost_unit_test_framework"
             BUILD_RPATH "${CMAKE_BINARY_DIR}/lib"
-            INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
+            INCLUDE_DIRECTORIES "${Boost_INCLUDE_DIR}"
 )
 
 
