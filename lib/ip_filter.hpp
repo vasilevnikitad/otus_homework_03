@@ -7,6 +7,12 @@
 #include <type_traits>
 #include <vector>
 
+#include <range/v3/action/sort.hpp>
+#include <range/v3/algorithm/for_each.hpp>
+#include <range/v3/view/filter.hpp>
+#include <range/v3/view/intersperse.hpp>
+#include <range/v3/view/transform.hpp>
+
 namespace ip_filter {
   using octet_t = std::uint8_t;
   enum : octet_t { IPV4_OCTET_CNT = 4 };
@@ -44,19 +50,14 @@ namespace ip_filter {
       ip(const std::string &ip_str) : ip_base{str2ip_base(ip_str)} { }
   };
 
-  template<std::size_t N = 0>
   inline std::ostream &operator <<(std::ostream &o, ip const &ip) {
-    o << +ip[N];
-    if constexpr (N != IPV4_OCTET_CNT - 1)
-      return operator<< <N + 1>(o << '.', ip);
-    return o;
-  }
+    using namespace ranges;
 
-  template <typename InputIt, typename OutputIt, typename ...Args,
-    typename = std::enable_if_t<std::conjunction_v<std::is_invocable_r<bool, Args, ip const &>...>>>
-  inline void apply_filters(InputIt begin, InputIt end, OutputIt out, Args&&... args)
-  {
-    (std::copy_if(begin, end, out, std::forward<Args>(args)), ...);
+    for(auto const &&st: ip | views::transform([](octet_t oct){return std::to_string(oct);})
+                            | views::intersperse(".") )
+      o << st;
+
+    return o;
   }
 
   template <typename IS, typename OS, typename ...Filters,
@@ -74,11 +75,10 @@ namespace ip_filter {
          */
     }
 
-    std::sort(std::begin(ip_pool), std::end(ip_pool), std::greater<ip>());
+    ranges::sort(ip_pool, std::greater<ip>());
 
-    apply_filters(std::begin(ip_pool), std::end(ip_pool),
-                  std::ostream_iterator<ip>(std::forward<OS>(os), "\n"),
-                  std::forward<Filters>(filters)...);
+    (ranges::for_each(ip_pool | ranges::views::filter(filters),
+                      [&os = os](ip const &ip){os << ip << std::endl;}), ...);
   }
 }
 

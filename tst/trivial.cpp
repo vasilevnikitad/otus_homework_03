@@ -11,6 +11,8 @@
 #include <sstream>
 #include <string>
 
+#include <range/v3/algorithm/equal.hpp>
+
 BOOST_AUTO_TEST_SUITE(trivial)
 
 BOOST_AUTO_TEST_CASE(trivial_data) try {
@@ -37,10 +39,11 @@ BOOST_AUTO_TEST_CASE(trivial_data) try {
     throw std::ios_base::failure{"Cannot open file for reading"};
 
   BOOST_CHECK(
-      std::equal(
+      ranges::equal(
         std::istream_iterator<std::string>(expect_stream),
         std::istream_iterator<std::string>(),
-        std::istream_iterator<std::string>(filter_data_stream)
+        std::istream_iterator<std::string>(filter_data_stream),
+        std::istream_iterator<std::string>()
       )
   );
 } catch(std::exception const &e) {
