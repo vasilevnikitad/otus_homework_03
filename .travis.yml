@@ -1,6 +1,9 @@
 dist: xenial
 language: cpp
 compiler: clang
+install:
+    - pip install --user conan
+    - conan user
 addons:
   apt:
     update: true
