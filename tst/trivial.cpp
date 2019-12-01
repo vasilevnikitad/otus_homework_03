@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(trivial_data) try {
   ip_filter::filter_pipe(
       data_stream,
       filter_data_stream,
-      [](ip_filter::ip const &)  {return true;},
+      [](ip_filter::ip const &) constexpr {return true;},
       [](ip_filter::ip const &ip){return ip[0] == 1;},
       [](ip_filter::ip const &ip){return ip[0] == 46 && ip[1] == 70;},
       [](ip_filter::ip const &ip){return std::any_of(std::begin(ip),
