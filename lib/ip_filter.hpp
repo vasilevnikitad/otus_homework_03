@@ -47,7 +47,7 @@ namespace ip_filter {
           sizeof...(Args) <= IPV4_OCTET_CNT> >
       constexpr ip(Args&&... args) : ip_base{std::forward<octet_t>(args)...} { }
 
-      ip(const std::string &ip_str) : ip_base{str2ip_base(ip_str)} { }
+      explicit ip(const std::string &ip_str) : ip_base{str2ip_base(ip_str)} { }
   };
 
   inline std::ostream &operator <<(std::ostream &o, ip const &ip) {
