@@ -4,7 +4,7 @@ if(POLICY CMP0076)
 endif()
 
 project(
-    ip_filter_lib
+    "${CMAKE_PROJECT_NAME}_lib"
 )
 
 

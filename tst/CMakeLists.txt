@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(
-    ip_filter_tst
+    "${CMAKE_PROJECT_NAME}_tst"
         LANGUAGES CXX
 )
 

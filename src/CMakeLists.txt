@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(
-    ip_filter_src
+    "${CMAKE_PROJECT_NAME}_src"
         LANGUAGES CXX
 )
 
-add_executable(ip_filter main.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
 
 set_target_properties(
-    ip_filter
+    ${PROJECT_NAME}
         PROPERTIES
             CXX_STANDARD 17
             CXX_EXTENSIONS OFF
@@ -20,7 +20,7 @@ set_target_properties(
 )
 
 install(
-    TARGETS ip_filter
+    TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION bin
         COMPONENT prog
 )
