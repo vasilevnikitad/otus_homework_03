@@ -1,14 +1,9 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(
-    "${CMAKE_PROJECT_NAME}_src"
-        LANGUAGES CXX
-)
-
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable("${CMAKE_PROJECT_NAME}" main.cpp)
 
 set_target_properties(
-    ${PROJECT_NAME}
+    "${CMAKE_PROJECT_NAME}"
         PROPERTIES
             CXX_STANDARD 17
             CXX_EXTENSIONS OFF
@@ -20,7 +15,7 @@ set_target_properties(
 )
 
 install(
-    TARGETS ${PROJECT_NAME}
+    TARGETS ${CMAKE_PROJECT_NAME}
         RUNTIME DESTINATION bin
         COMPONENT prog
 )
